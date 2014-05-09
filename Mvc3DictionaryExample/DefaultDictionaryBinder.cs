@@ -33,6 +33,8 @@ public class DefaultDictionaryBinder : DefaultModelBinder
         this.nextBinder = nextBinder;
     }
 
+    private static readonly object GetValueProviderKeys_CacheKey = new object();
+
     /// <summary>
     /// Get the keys of the value provider in the given controller context.
     /// </summary>
@@ -40,20 +42,19 @@ public class DefaultDictionaryBinder : DefaultModelBinder
     /// <returns>Returns a list of keys representing available values.</returns>
     private IEnumerable<string> GetValueProviderKeys(ControllerContext controllerContext)
     {
-        IDictionary contextItems = HttpContext.Current.Items;
+        var contextItems = controllerContext.HttpContext.Items;
 
-        // Do not reference this key elsewhere, this is strictly for cache.
-        if (!contextItems.Contains("ValueProviderKeys"))
+        if (!contextItems.Contains(GetValueProviderKeys_CacheKey))
         {
             var keys = new List<string>();
             keys.AddRange(controllerContext.HttpContext.Request.Form.Keys.Cast<string>());
             keys.AddRange(((IDictionary<string, object>)controllerContext.RouteData.Values).Keys);
             keys.AddRange(controllerContext.HttpContext.Request.QueryString.Keys.Cast<string>());
             keys.AddRange(controllerContext.HttpContext.Request.Files.Keys.Cast<string>());
-            contextItems["ValueProviderKeys"] = keys;
+            contextItems[GetValueProviderKeys_CacheKey] = keys;
         }
 
-        return (IEnumerable<string>)contextItems["ValueProviderKeys"];
+        return (IEnumerable<string>)contextItems[GetValueProviderKeys_CacheKey];
     }
 
     /// <summary>
