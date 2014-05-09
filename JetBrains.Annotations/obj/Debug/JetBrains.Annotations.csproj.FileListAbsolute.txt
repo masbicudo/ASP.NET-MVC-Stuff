@@ -1,0 +1,4 @@
+C:\masb\MVCStuff\JetBrains.Annotations\bin\Debug\JetBrains.Annotations.dll
+C:\masb\MVCStuff\JetBrains.Annotations\bin\Debug\JetBrains.Annotations.pdb
+C:\masb\MVCStuff\JetBrains.Annotations\obj\Debug\JetBrains.Annotations.dll
+C:\masb\MVCStuff\JetBrains.Annotations\obj\Debug\JetBrains.Annotations.pdb
