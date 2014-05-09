@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc3DictionaryExample", "Mvc3DictionaryExample\Mvc3DictionaryExample.csproj", "{833DD026-0D38-47BB-BAE5-37275444C719}"
 EndProject
 Global
