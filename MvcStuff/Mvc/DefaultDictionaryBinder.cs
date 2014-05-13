@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using Microsoft.CSharp.RuntimeBinder;
 
-namespace MvcStuff.ModelBinders
+namespace MvcStuff
 {
     /// <summary>
     /// ASP.NET MVC Default Dictionary Binder.

@@ -3,7 +3,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Caching;
 
-namespace MvcStuff.Mocks
+namespace MvcStuff
 {
     public class MockHttpContext : HttpContextBase
     {

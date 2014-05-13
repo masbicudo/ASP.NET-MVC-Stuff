@@ -2,7 +2,7 @@
 using System.Net;
 using System.Web.Mvc;
 
-namespace MvcStuff.ActionResults
+namespace MvcStuff
 {
     /// <summary>
     /// Representa um resultado contendo um código de status 403 (Forbidden).

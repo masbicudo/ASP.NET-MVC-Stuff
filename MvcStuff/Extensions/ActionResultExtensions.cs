@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
-using MvcStuff.ActionResults;
 
-namespace MvcStuff.Extensions
+namespace MvcStuff
 {
     public static class ActionResultExtensions
     {

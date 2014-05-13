@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace MvcStuff.ActionResults
+namespace MvcStuff
 {
     /// <summary>
     /// Wraps an action result and extends it with a call to `Response.End()`.

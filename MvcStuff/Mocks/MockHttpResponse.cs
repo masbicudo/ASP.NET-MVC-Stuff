@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace MvcStuff.Mocks
+namespace MvcStuff
 {
     public class MockHttpResponse : HttpResponseBase
     {

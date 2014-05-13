@@ -1,7 +1,7 @@
 using System.Security.Principal;
 using System.Web.Mvc;
 
-namespace MvcStuff.Filters
+namespace MvcStuff
 {
     public class PermissionContext
     {

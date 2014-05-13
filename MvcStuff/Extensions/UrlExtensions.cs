@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using JetBrains.Annotations;
 
-namespace MvcStuff.Extensions
+namespace MvcStuff
 {
     /// <summary>
     /// Extensions for the UrlHelper class.

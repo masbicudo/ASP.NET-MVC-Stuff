@@ -1,7 +1,7 @@
 using System;
 using System.Web;
 
-namespace MvcStuff.Mocks
+namespace MvcStuff
 {
     public delegate Uri DefaultUrlGetterFunc(HttpRequestBase httpRequestBase);
 }

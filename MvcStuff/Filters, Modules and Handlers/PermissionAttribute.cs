@@ -1,5 +1,4 @@
-﻿using MvcStuff.ActionResults;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
@@ -7,7 +6,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MvcStuff.Filters
+namespace MvcStuff
 {
     /// <summary>
     /// Base authorization filter used to allow or deny a loged user to access a specific protected resource.

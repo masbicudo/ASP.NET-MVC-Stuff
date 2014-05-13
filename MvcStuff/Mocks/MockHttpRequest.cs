@@ -2,7 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 
-namespace MvcStuff.Mocks
+namespace MvcStuff
 {
     public class MockHttpRequest : HttpRequestBase
     {

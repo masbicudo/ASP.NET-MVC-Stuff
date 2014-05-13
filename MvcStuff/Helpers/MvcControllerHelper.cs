@@ -4,9 +4,8 @@ using System.Diagnostics;
 using System.Web.Mvc;
 using System.Web.Routing;
 using JetBrains.Annotations;
-using MvcStuff.Mocks;
 
-namespace MvcStuff.Helpers
+namespace MvcStuff
 {
     /// <summary>
     /// Class containing ASP.NET MVC utilities to help with actions.

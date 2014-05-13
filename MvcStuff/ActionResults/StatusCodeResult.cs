@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
-namespace MvcStuff.ActionResults
+namespace MvcStuff
 {
     /// <summary>
     /// Representa um resultado contendo um código de status indicado por parâmetro.

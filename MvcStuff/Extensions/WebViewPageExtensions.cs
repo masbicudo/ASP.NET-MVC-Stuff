@@ -1,14 +1,12 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using MvcStuff.Helpers;
-using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
+using JetBrains.Annotations;
 
-namespace MvcStuff.Extensions
+namespace MvcStuff
 {
     /// <summary>
     /// Extension methods to the view page that allows changin the view

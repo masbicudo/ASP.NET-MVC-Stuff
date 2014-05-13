@@ -3,7 +3,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MvcStuff.Filters
+namespace MvcStuff
 {
     public class CustomAuthorizationModule : IHttpModule
     {

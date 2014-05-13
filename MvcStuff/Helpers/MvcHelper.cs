@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using JetBrains.Annotations;
 
-namespace MvcStuff.Helpers
+namespace MvcStuff
 {
     /// <summary>
     /// Class containing ASP.NET MVC utilities, to help with rendering views to strings,
