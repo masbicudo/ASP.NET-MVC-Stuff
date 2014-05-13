@@ -33,7 +33,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,8 +43,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionResults\EndRequestWrapperResult.cs" />
+    <Compile Include="ActionResults\ForbiddenResult.cs" />
+    <Compile Include="ActionResults\JsonForbiddenResult.cs" />
+    <Compile Include="ActionResults\JsonUnauthorizedResult.cs" />
+    <Compile Include="ActionResults\NotFoundResult.cs" />
+    <Compile Include="ActionResults\StatusCodeResult.cs" />
+    <Compile Include="ActionResults\UnauthorizedResult.cs" />
+    <Compile Include="Extensions\AspNetExtensions.cs" />
+    <Compile Include="AspNetInfo.cs" />
     <Compile Include="DebugInfo.cs" />
-    <Compile Include="DefaultDictionaryBinder.cs" />
+    <Compile Include="Extensions\ActionResultExtensions.cs" />
+    <Compile Include="Extensions\UrlExtensions.cs" />
+    <Compile Include="Extensions\WebViewPageExtensions.cs" />
+    <Compile Include="Filters, Modules and Handlers\CustomAuthorizationModule.cs" />
+    <Compile Include="Filters, Modules and Handlers\PermissionAttribute.cs" />
+    <Compile Include="Filters, Modules and Handlers\PermissionContext.cs" />
+    <Compile Include="JsonResponseData.cs" />
+    <Compile Include="Mvc\DefaultDictionaryBinder.cs" />
     <Compile Include="Mocks\DefaultUrlGetterFunc.cs" />
     <Compile Include="Mocks\MockHttpCachePolicy.cs" />
     <Compile Include="Mocks\MockHttpContext.cs" />

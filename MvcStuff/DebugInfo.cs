@@ -23,7 +23,7 @@ namespace MvcStuff
 #endif
             }
         }
-
+        
         private static readonly object locker = new object();
 
         private static HostingServer? _server;
