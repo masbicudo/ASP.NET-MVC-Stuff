@@ -8,13 +8,15 @@ using System.Reflection;
 using System.Web.Mvc;
 using Microsoft.CSharp.RuntimeBinder;
 
-namespace MvcStuff
+namespace MvcStuff.ModelBinders
 {
     /// <summary>
-    /// ASP.NET MVC Default Dictionary Binder
+    /// ASP.NET MVC Default Dictionary Binder.
     /// </summary>
     public class DefaultDictionaryBinder : DefaultModelBinder
     {
+        // based on: https://github.com/loune/MVCStuff
+
         private readonly IModelBinder nextBinder;
 
         /// <summary>
