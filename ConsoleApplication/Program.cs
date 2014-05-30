@@ -10,6 +10,10 @@ namespace ConsoleApplication
 
         static unsafe void Main(string[] args)
         {
+            var a = !(bool?)null;
+
+            var b = a;
+
             Console.WriteLine(string.Format("{0} = {1}", "sizeof(VOID)", sizeof(VOID)));
             foreach (var eachAttr in typeof(VOID).GetCustomAttributes(true))
                 Console.WriteLine(string.Format("{0} = {1}", "eachAttr.GetType().Name", eachAttr.GetType().Name));

@@ -50,6 +50,11 @@
     <Compile Include="ActionResults\NotFoundResult.cs" />
     <Compile Include="ActionResults\StatusCodeResult.cs" />
     <Compile Include="ActionResults\UnauthorizedResult.cs" />
+    <Compile Include="AllowanceDisposer.cs" />
+    <Compile Include="CustomKey.cs" />
+    <Compile Include="DataDisposer.cs" />
+    <Compile Include="DataDisposerBase.cs" />
+    <Compile Include="Disposer.cs" />
     <Compile Include="Extensions\AspNetExtensions.cs" />
     <Compile Include="AspNetInfo.cs" />
     <Compile Include="DebugInfo.cs" />
