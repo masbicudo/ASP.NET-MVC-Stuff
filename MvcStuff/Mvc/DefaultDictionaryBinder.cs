@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Web.Mvc;
 using Microsoft.CSharp.RuntimeBinder;
 
@@ -71,6 +72,11 @@ namespace MvcStuff
             return TypeDescriptor.GetConverter(type).ConvertFrom(stringValue);
         }
 
+        /// <summary>
+        /// VOID struct wihtout fields.
+        /// Unfortunately .Net does not alow 0 size structs, and make them always 1 byte.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential, Size = 0)]
         struct VOID { }
 
         class MetaData
@@ -139,6 +145,13 @@ namespace MvcStuff
         {
             Type modelType = bindingContext.ModelType;
             MetaData metaData = modelTypeToMetadata.GetOrAdd(modelType, CreateMetaData);
+
+            // optional delegates won't bind...
+            // this is useful to use a method that has a delegate in the declaration as an action
+            // and also as a method that can be called, passing an optional delegate
+            // todo: use IoC to pass a delegate when it is required
+            if (modelType.IsSubclassOf(typeof(Delegate)) && !bindingContext.ModelMetadata.IsRequired)
+                return null;
 
             // skipping collections containing an Index property
             bool isOldCollection = metaData.listType != null
