@@ -74,19 +74,24 @@ namespace MvcStuff
 
                 this.JsonResult(response);
 
-                // This is an ajax request, so to prevent the FormsAuthentication module
-                // redirecting to the login page when the status-code is 401, just end the request.
+                // This is an ajax request, so to prevent:
+                //  - FormsAuthentication module redirecting to the login page when the status-code is 401,
+                //  - and also Custom Errors handling from rewriting the page contents inside request.End(),
+                // we use the special 'EndWithoutInterference', made for this purpose.
+
                 // This response will not be cacheable by using aps.net output-caching, because it
                 // will be skipped, just like the forms-auth... and any other handler or module
-                // that executes at the end of the request (just for 401's though).
-                // ResponseEnd + OutputCache: http://www.west-wind.com/weblog/posts/2009/May/21/Dont-use-ResponseEnd-with-OutputCache
-                // Same solution of this guy: http://stackoverflow.com/questions/2580596/how-do-you-handle-ajax-requests-when-user-is-not-authenticated
-                // Alternative solutions: http://haacked.com/archive/2011/10/04/prevent-forms-authentication-login-page-redirect-when-you-donrsquot-want.aspx
-                // Another alternative: disable FormsAuth redirection in web.config, and do redirects manually, i.e. kind of use RedirectResult instead
-                // ASP.NET 4.5 now supports response.SuppressFormsAuthenticationRedirect
-                if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
-                    if (!response.TrySetSuppressFormsAuthenticationRedirect(true))
-                        response.End();
+                // that executes at the end of the request (just for 4xx and 5xx status codes).
+
+                // Resources:
+                //  - ResponseEnd + OutputCache: http://www.west-wind.com/weblog/posts/2009/May/21/Dont-use-ResponseEnd-with-OutputCache
+                //  - Same solution of this guy: http://stackoverflow.com/questions/2580596/how-do-you-handle-ajax-requests-when-user-is-not-authenticated
+                //  - Alternative solutions: http://haacked.com/archive/2011/10/04/prevent-forms-authentication-login-page-redirect-when-you-donrsquot-want.aspx
+                //  - Another alternative: disable FormsAuth redirection in web.config, and do redirects manually, i.e. kind of use RedirectResult instead
+                //  - ASP.NET 4.5 now supports response.SuppressFormsAuthenticationRedirect
+                if (response.StatusCode >= 400)
+                    response.EndWithoutInterference();
+
             }
         }
 
