@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -14,6 +16,92 @@ namespace MvcStuff
     /// </summary>
     public static class WebViewPageExtensions
     {
+        private static object AnyAccessAllowedKey = new CustomKey("AnyAccessAllowedKey");
+
+        class AnyAccessAllowedStackItem
+        {
+            public bool IsToRender { get; set; }
+        }
+
+        /// <summary>
+        /// Renders the content inside of an using statement, only if any of the calls to 'CanAccessAction'
+        /// inside the using returns true.
+        /// </summary>
+        /// <param name="this">The current view page.</param>
+        /// <returns> Returns a disposable object that is used to render the contents inside the using. </returns>
+        public static AllowanceDisposer AnyAccessAllowed(this WebViewPage @this)
+        {
+            var stringBuilder = ((StringWriter)@this.ViewContext.Writer).GetStringBuilder();
+            var oldLength = stringBuilder.Length;
+
+            var itemsCollection = @this.Context.Items;
+
+            Stack<AnyAccessAllowedStackItem> stack;
+            if (!itemsCollection.Contains(AnyAccessAllowedKey))
+                itemsCollection[AnyAccessAllowedKey] = stack = new Stack<AnyAccessAllowedStackItem>();
+            else
+                stack = (Stack<AnyAccessAllowedStackItem>)itemsCollection[AnyAccessAllowedKey];
+
+            stack.Push(new AnyAccessAllowedStackItem());
+
+            return new AllowanceDisposer(
+                allowed =>
+                {
+                    // ReSharper disable once ConstantNullCoalescingCondition
+                    // resharper lies about the following line of code... in fact `!(bool?)null` => `null`.
+                    var result = !allowed ?? !stack.Pop().IsToRender;
+                    SetIsToRenderIfNeeded(result, itemsCollection);
+                    if (result)
+                    {
+                        stringBuilder.Length = oldLength;
+                    }
+                });
+        }
+
+        private static void SetIsToRenderIfNeeded(bool result, IDictionary itemsCollection)
+        {
+            if (result && itemsCollection.Contains(AnyAccessAllowedKey))
+            {
+                var stack = (Stack<AnyAccessAllowedStackItem>)itemsCollection[AnyAccessAllowedKey];
+                if (stack != null && stack.Count > 0)
+                    stack.Peek().IsToRender = true;
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the current user can access the specified action.
+        /// At this moment it looks only at PermissionAttribute attributes.
+        /// </summary>
+        /// <param name="this">The current view page.</param>
+        /// <param name="routeValues">An object containing the route values for the action. </param>
+        /// <param name="method">Http method to differentiate GET, HEAD, POST, PUT and DELETE actions.</param>
+        /// <returns>Returns true if the current user has access to the given action; otherwise false. </returns>
+        public static bool CanAccessAction(
+            this WebViewPage @this,
+            [AspMvcArea("area")] object routeValues = null,
+            HttpVerbs method = HttpVerbs.Get)
+        {
+            return @this.CanAccessAction(null, null, routeValues, method);
+        }
+
+        /// <summary>
+        /// Checks whether the current user can access the specified action.
+        /// At this moment it looks only at PermissionAttribute attributes.
+        /// </summary>
+        /// <param name="this">The current view page.</param>
+        /// <param name="action">Action name to test.</param>
+        /// <param name="routeValues">An object containing the route values for the action. </param>
+        /// <param name="method">Http method to differentiate GET, HEAD, POST, PUT and DELETE actions.</param>
+        /// <returns>Returns true if the current user has access to the given action; otherwise false. </returns>
+        public static bool CanAccessAction(
+            this WebViewPage @this,
+            [AspMvcAction] string action,
+            [AspMvcArea("area")] object routeValues = null,
+            HttpVerbs method = HttpVerbs.Get)
+        {
+            return @this.CanAccessAction(action, null, routeValues, method);
+        }
+
         /// <summary>
         /// Checks whether the current user can access the specified action.
         /// At this moment it looks only at PermissionAttribute attributes.
@@ -66,7 +154,9 @@ namespace MvcStuff
             // If there is a logged user, then use permission attributes to determine whether user has access or not.
             if (user != null)
             {
-                return CheckUserAccess(mvcHelper);
+                var result = CheckUserAccess(mvcHelper);
+                SetIsToRenderIfNeeded(result, @this.Context.Items);
+                return result;
             }
 
             return false;
@@ -129,7 +219,9 @@ namespace MvcStuff
             // If there is a logged user, then use permission attributes to determine whether user has access or not.
             if (user != null)
             {
-                return CheckUserAccess(mvcHelper);
+                var result = CheckUserAccess(mvcHelper);
+                SetIsToRenderIfNeeded(result, @this.Context.Items);
+                return result;
             }
 
             return false;
@@ -188,7 +280,9 @@ namespace MvcStuff
             // If there is a logged user, then use permission attributes to determine whether user has access or not.
             if (user != null)
             {
-                return mvcHelpers.Any(CheckUserAccess);
+                var result = mvcHelpers.Any(CheckUserAccess);
+                SetIsToRenderIfNeeded(result, @this.Context.Items);
+                return result;
             }
 
             return false;
