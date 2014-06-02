@@ -47,11 +47,7 @@ namespace MvcStuff
                 {
                     Debug.Assert(httpContext.User != null, "httpContext.User must not be null");
                     canAccess = this.CanAccessResource(
-                        new PermissionContext
-                        {
-                            User = httpContext.User,
-                            ControllerContext = filterContext.Controller.ControllerContext
-                        });
+                        new PermissionContext(filterContext.Controller.ControllerContext, httpContext.User));
                 }
             }
 
