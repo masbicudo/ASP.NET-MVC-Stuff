@@ -15,6 +15,10 @@ namespace MvcStuff
     /// </summary>
     public class StatusCodeResult : ActionResult
     {
+        private StatusCodeResult()
+        {
+        }
+
         public StatusCodeResult(HttpStatusCode statusCode)
             : this(statusCode, null)
         {
@@ -46,6 +50,16 @@ namespace MvcStuff
 
         public Encoding JsonContentEncoding { get; set; }
         public string JsonContentType { get; set; }
+
+        /// <summary>
+        /// When set MaxJsonLength passed to the JavaScriptSerializer.
+        /// </summary>
+        public int? JsonMaxLength { get; set; }
+
+        /// <summary>
+        /// When set RecursionLimit passed to the JavaScriptSerializer.
+        /// </summary>
+        public int? RecursionLimit { get; set; }
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -105,9 +119,121 @@ namespace MvcStuff
             if (this.Data != null)
             {
                 var serializer = new JavaScriptSerializer();
+
+                if (this.JsonMaxLength.HasValue)
+                    serializer.MaxJsonLength = this.JsonMaxLength.Value;
+
+                if (this.RecursionLimit.HasValue)
+                    serializer.RecursionLimit = this.RecursionLimit.Value;
+
                 response.Write(serializer.Serialize(this.Data));
             }
 
+        }
+
+        public static implicit operator JsonResult(StatusCodeResult statusCodeResult)
+        {
+            return statusCodeResult.ToJsonResult();
+        }
+
+        public static implicit operator HttpStatusCodeResult(StatusCodeResult statusCodeResult)
+        {
+            return statusCodeResult.ToHttpStatusCodeResult();
+        }
+
+        public virtual JsonResult ToJsonResult()
+        {
+            return new CustomJsonResult(this);
+        }
+
+        public virtual HttpStatusCodeResult ToHttpStatusCodeResult()
+        {
+            return new CustomHttpStatusCodeResult(this);
+        }
+
+        private class CustomJsonResult : JsonResult
+        {
+            public CustomJsonResult(StatusCodeResult statusCodeResult)
+            {
+                this.ContentEncoding = statusCodeResult.JsonContentEncoding;
+                this.ContentType = statusCodeResult.JsonContentType;
+                this.Data = statusCodeResult.Data;
+                this.JsonRequestBehavior = statusCodeResult.JsonRequestBehavior;
+                this.MaxJsonLength = statusCodeResult.JsonMaxLength;
+                this.RecursionLimit = statusCodeResult.RecursionLimit;
+                this.StatusCode = statusCodeResult.StatusCode;
+                this.StatusDescription = statusCodeResult.StatusDescription;
+            }
+
+            public string StatusDescription { get; set; }
+
+            public HttpStatusCode StatusCode { get; set; }
+
+#if !ASP_MVC_4
+            public int? MaxJsonLength { get; set; }
+
+            public int? RecursionLimit { get; set; }
+#endif
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                var tempResult = new StatusCodeResult
+                {
+                    StatusCode = this.StatusCode,
+                    StatusDescription = this.StatusDescription,
+                    Data = this.Data,
+                    JsonContentEncoding = this.ContentEncoding,
+                    JsonContentType = this.ContentType,
+                    JsonRequestBehavior = this.JsonRequestBehavior,
+                    JsonMaxLength = this.MaxJsonLength,
+                    RecursionLimit = this.RecursionLimit,
+                };
+
+                tempResult.ExecuteResult(context);
+            }
+        }
+
+        private class CustomHttpStatusCodeResult : HttpStatusCodeResult
+        {
+            public CustomHttpStatusCodeResult(StatusCodeResult statusCodeResult)
+                : base((int)statusCodeResult.StatusCode, statusCodeResult.StatusDescription)
+            {
+                this.JsonContentEncoding = statusCodeResult.JsonContentEncoding;
+                this.JsonContentType = statusCodeResult.JsonContentType;
+                this.Data = statusCodeResult.Data;
+                this.JsonRequestBehavior = statusCodeResult.JsonRequestBehavior;
+                this.MaxJsonLength = statusCodeResult.JsonMaxLength;
+                this.JsonRecursionLimit = statusCodeResult.RecursionLimit;
+            }
+
+            public int? JsonRecursionLimit { get; set; }
+
+            public int? MaxJsonLength { get; set; }
+
+            public JsonRequestBehavior JsonRequestBehavior { get; set; }
+
+            public object Data { get; set; }
+
+            public string JsonContentType { get; set; }
+
+            public Encoding JsonContentEncoding { get; set; }
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                var tempResult = new StatusCodeResult
+                {
+                    StatusCode = (HttpStatusCode)this.StatusCode,
+                    StatusDescription = this.StatusDescription,
+                    Data = this.Data,
+                    JsonContentEncoding = this.JsonContentEncoding,
+                    JsonContentType = this.JsonContentType,
+                    JsonRequestBehavior = this.JsonRequestBehavior,
+                    JsonMaxLength = this.MaxJsonLength,
+                    RecursionLimit = this.JsonRecursionLimit,
+                };
+
+                tempResult.ExecuteResult(context);
+            }
         }
     }
 }
