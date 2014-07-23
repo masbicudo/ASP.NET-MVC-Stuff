@@ -8,22 +8,43 @@ using System.Web.Script.Serialization;
 
 namespace MvcStuff
 {
+    #if pt_BR
     /// <summary>
     /// Representa um resultado contendo um código de status indicado por parâmetro.
     /// Esse resultado pode ser usando tanto para requisições normais,
     /// como para requisições JSON ou XML (Ajax).
     /// </summary>
+    #else
+    /// <summary>
+    /// Represents a result with a status code passed by parameter.
+    /// This result can be used by regular Html requests,
+    /// or else by JSON or XML requests (Ajax).
+    /// </summary>
+    #endif
     public class StatusCodeResult : ActionResult
     {
         private StatusCodeResult()
         {
         }
+        // todo: allow passing model state errors to this class, so that it can give feedback to the user, when applicable
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatusCodeResult"/> class
+        /// with the desired status code.
+        /// </summary>
+        /// <param name="statusCode"> The desired status code. </param>
         public StatusCodeResult(HttpStatusCode statusCode)
             : this(statusCode, null)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatusCodeResult"/> class
+        /// with the desired status code,
+        /// and a user friendly description of the status.
+        /// </summary>
+        /// <param name="statusCode"> The desired status code. </param>
+        /// <param name="statusDescription"> User friendly status description. </param>
         public StatusCodeResult(HttpStatusCode statusCode, [Localizable(true)] string statusDescription)
         {
             this.StatusCode = statusCode;
@@ -46,9 +67,11 @@ namespace MvcStuff
         public string StatusDescription { get; private set; }
 
         public object Data { get; set; }
+
         public JsonRequestBehavior JsonRequestBehavior { get; set; }
 
         public Encoding JsonContentEncoding { get; set; }
+
         public string JsonContentType { get; set; }
 
         /// <summary>
