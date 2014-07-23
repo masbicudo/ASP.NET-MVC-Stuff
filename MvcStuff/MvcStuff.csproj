@@ -75,6 +75,7 @@
     <Compile Include="Helpers\MvcControllerHelper.cs" />
     <Compile Include="Helpers\MvcHelper.cs" />
     <Compile Include="Mvc\ExtendedViewPage.cs" />
+    <Compile Include="Mvc\MvcAppOptimizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemExtensions\StringExtensions.cs" />
   </ItemGroup>
