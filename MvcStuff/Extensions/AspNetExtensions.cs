@@ -1,4 +1,3 @@
-﻿using System.Net;
 ﻿using System;
 using System.Linq;
 using System.Reflection;
@@ -25,7 +24,7 @@ namespace MvcStuff
 
         /// <summary>
         /// Ends a request without interference from ASP.NET handlers (Forms Authentication and Custom Errors),
-        /// and from IIS (Iis Custom Errors).
+        /// and from IIS (IIS Custom Errors).
         /// </summary>
         public static void EndWithoutInterference(this HttpResponseBase response)
         {
@@ -38,17 +37,29 @@ namespace MvcStuff
             if (response is HttpResponseWrapper)
             {
                 // THIS IS A HACK, IT IS NOT FUTURE PROOF
-                // When a response is cancelable, a call to response.End will finish it.
-                // Although, this won't happen if it's not cancelable, and execution will
+                // When a response is "cancellable", a call to response.End will finish it.
+                // Although, this won't happen if it's "not cancellable", and execution will
                 // continue after the response.End call, and also, Custom Errors handler
                 // will come into action inside the End method!!! It'll replace the page
-                // content, based on the StatusCode, that why we fool it by setting
+                // content, based on the StatusCode, thats why we fool it by setting
                 // StatusCode temporarilly to 200, and set it back after the End call.
-                var isCancelable = (bool)typeof(HttpContext).GetProperty(
-                    "IsInCancellablePeriod",
-                    BindingFlags.NonPublic | BindingFlags.Static).GetValue(HttpContext.Current, null);
+                #region pt-BR
+                // ISSO É UMA GAMBIARRA
+                // Quando um requests está no estado "cancelável", o efeito do método `response.End()` é um término brusco.
+                // Caso contrário, o método `response.End()` não termina, e o código conteinua executando,
+                // sendo que os Handlers de Erros Customizados vão ser renderizados dentro da chamada do `End()`,
+                // o que por si só já é bizarro. Ao fazer isso, substitui-se o conteúdo já renderizado,
+                // pelo conteúdo do handler de erro.
+                // Por isso tudo, vamos enganar o ASP.NET, setando o status code temporariamente para 200,
+                // e retornando o valor original após a chamada do `End()`.
+                #endregion
+                var isCancellableProperty =
+                    typeof(HttpContext).GetProperty(
+                        "IsInCancellablePeriod",
+                        BindingFlags.NonPublic | BindingFlags.Static);
+                var isCancellable = (bool)isCancellableProperty.GetValue(HttpContext.Current, null);
 
-                response.StatusCode = isCancelable
+                response.StatusCode = isCancellable
                     ? (int)statusCode
                     : (response.StatusCode >= 400 ? 200 : response.StatusCode);
             }
