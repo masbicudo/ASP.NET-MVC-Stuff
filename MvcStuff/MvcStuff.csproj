@@ -76,6 +76,7 @@
     <Compile Include="Helpers\MvcHelper.cs" />
     <Compile Include="Mvc\ExtendedViewPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemExtensions\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JetBrains.Annotations\JetBrains.Annotations.csproj">
