@@ -5,16 +5,16 @@ using System.Web.Mvc;
 
 namespace MvcStuff
 {
-    public abstract class UserDataPermissionAttribute<T> : PermissionAttribute
+    public abstract class UserDataPermissionAttribute : PermissionAttribute
     {
-        public UserDataPermissionAttribute(T data, params Type[] conditions)
+        public UserDataPermissionAttribute(object data, params Type[] conditions)
         {
 
         }
 
         public override bool CanAccessResource(PermissionContext permissionContext)
         {
-
+            throw new NotImplementedException();
         }
     }
 

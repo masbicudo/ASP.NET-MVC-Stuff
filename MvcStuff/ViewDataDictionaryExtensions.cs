@@ -45,4 +45,11 @@ namespace MvcStuff
             yield return value;
         }
     }
+
+    public enum ModelStateSelector
+    {
+        ForModel,
+        ForModelProperties,
+        ForUnknown,
+    }
 }
