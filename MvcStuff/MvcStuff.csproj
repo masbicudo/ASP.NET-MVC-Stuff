@@ -51,6 +51,8 @@
     <Compile Include="ActionResults\StatusCodeResult.cs" />
     <Compile Include="ActionResults\UnauthorizedResult.cs" />
     <Compile Include="AllowanceDisposer.cs" />
+    <Compile Include="JsonModelErrorData.cs" />
+    <Compile Include="ModelStateDictionaryExtensions.cs" />
     <Compile Include="CustomKey.cs" />
     <Compile Include="DataDisposer.cs" />
     <Compile Include="DataDisposerBase.cs" />
