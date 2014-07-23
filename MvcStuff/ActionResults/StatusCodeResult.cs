@@ -23,9 +23,6 @@ namespace MvcStuff
     #endif
     public class StatusCodeResult : ActionResult
     {
-        private StatusCodeResult()
-        {
-        }
         // todo: allow passing model state errors to this class, so that it can give feedback to the user, when applicable
 
         /// <summary>
@@ -61,6 +58,10 @@ namespace MvcStuff
             };
         }
 
+        private StatusCodeResult()
+        {
+        }
+
         public HttpStatusCode StatusCode { get; private set; }
 
         [Localizable(true)]
@@ -82,7 +83,7 @@ namespace MvcStuff
         /// <summary>
         /// When set RecursionLimit passed to the JavaScriptSerializer.
         /// </summary>
-        public int? RecursionLimit { get; set; }
+        public int? JsonRecursionLimit { get; set; }
 
         public override void ExecuteResult(ControllerContext context)
         {
@@ -146,8 +147,8 @@ namespace MvcStuff
                 if (this.JsonMaxLength.HasValue)
                     serializer.MaxJsonLength = this.JsonMaxLength.Value;
 
-                if (this.RecursionLimit.HasValue)
-                    serializer.RecursionLimit = this.RecursionLimit.Value;
+                if (this.JsonRecursionLimit.HasValue)
+                    serializer.RecursionLimit = this.JsonRecursionLimit.Value;
 
                 response.Write(serializer.Serialize(this.Data));
             }
@@ -183,7 +184,7 @@ namespace MvcStuff
                 this.Data = statusCodeResult.Data;
                 this.JsonRequestBehavior = statusCodeResult.JsonRequestBehavior;
                 this.MaxJsonLength = statusCodeResult.JsonMaxLength;
-                this.RecursionLimit = statusCodeResult.RecursionLimit;
+                this.RecursionLimit = statusCodeResult.JsonRecursionLimit;
                 this.StatusCode = statusCodeResult.StatusCode;
                 this.StatusDescription = statusCodeResult.StatusDescription;
             }
@@ -209,7 +210,7 @@ namespace MvcStuff
                     JsonContentType = this.ContentType,
                     JsonRequestBehavior = this.JsonRequestBehavior,
                     JsonMaxLength = this.MaxJsonLength,
-                    RecursionLimit = this.RecursionLimit,
+                    JsonRecursionLimit = this.RecursionLimit,
                 };
 
                 tempResult.ExecuteResult(context);
@@ -226,7 +227,7 @@ namespace MvcStuff
                 this.Data = statusCodeResult.Data;
                 this.JsonRequestBehavior = statusCodeResult.JsonRequestBehavior;
                 this.MaxJsonLength = statusCodeResult.JsonMaxLength;
-                this.JsonRecursionLimit = statusCodeResult.RecursionLimit;
+                this.JsonRecursionLimit = statusCodeResult.JsonRecursionLimit;
             }
 
             public int? JsonRecursionLimit { get; set; }
@@ -252,7 +253,7 @@ namespace MvcStuff
                     JsonContentType = this.JsonContentType,
                     JsonRequestBehavior = this.JsonRequestBehavior,
                     JsonMaxLength = this.MaxJsonLength,
-                    RecursionLimit = this.JsonRecursionLimit,
+                    JsonRecursionLimit = this.JsonRecursionLimit,
                 };
 
                 tempResult.ExecuteResult(context);
