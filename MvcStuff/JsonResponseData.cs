@@ -11,5 +11,7 @@ namespace MvcStuff
         public Object Obj { get; set; }
         public string ErrorType { get; set; }
         public int Status { get; set; }
+
+        public JsonModelErrorData[] ModelErrors { get; set; }
     }
 }
