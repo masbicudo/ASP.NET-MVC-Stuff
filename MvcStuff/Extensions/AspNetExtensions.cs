@@ -1,6 +1,9 @@
 ﻿using System.Net;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Web;
+using MvcStuff.SystemExtensions;
 
 namespace MvcStuff
 {
@@ -56,6 +59,17 @@ namespace MvcStuff
 
             if (response is HttpResponseWrapper)
                 response.StatusCode = (int)statusCode;
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether this requests accepts a JSON response.
+        /// </summary>
+        /// <param name="request">Request to check for JSON response acceptance.</param>
+        /// <returns>True if the request accepts a JSON response.</returns>
+        public static bool AcceptsJsonResponse(this HttpRequestBase request)
+        {
+            return request.Headers["Accept"].EnumerableSplit(',')
+               .Any(t => t.Equals("application/json", StringComparison.OrdinalIgnoreCase));
         }
     }
 }
