@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using JetBrains.Annotations;
 using MvcStuff.SystemExtensions;
 
 namespace MvcStuff
@@ -77,10 +80,135 @@ namespace MvcStuff
         /// </summary>
         /// <param name="request">Request to check for JSON response acceptance.</param>
         /// <returns>True if the request accepts a JSON response.</returns>
-        public static bool AcceptsJsonResponse(this HttpRequestBase request)
+        public static bool IsJsonRequest(this HttpRequestBase request)
         {
-            return request.Headers["Accept"].EnumerableSplit(',')
-               .Any(t => t.Equals("application/json", StringComparison.OrdinalIgnoreCase));
+            var acc0 = request.AcceptedMimesInOrder().First();
+            var isJson = acc0.Contains("application/json", StringComparer.InvariantCultureIgnoreCase)
+                || acc0.Contains("text/x-json", StringComparer.InvariantCultureIgnoreCase);
+            return isJson;
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether this requests accepts an XML response, that is not XHTML.
+        /// </summary>
+        /// <param name="request">Request to check for XML response acceptance.</param>
+        /// <returns>True if the request accepts an XML response.</returns>
+        public static bool IsXmlRequest(this HttpRequestBase request)
+        {
+            var acc0 = request.AcceptedMimesInOrder().First();
+            var isXml = acc0.Contains("application/xml", StringComparer.InvariantCultureIgnoreCase)
+                && !acc0.Contains("application/xhtml", StringComparer.InvariantCultureIgnoreCase)
+                && !acc0.Contains("application/xhtml+xml", StringComparer.InvariantCultureIgnoreCase);
+            return isXml;
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether this requests accepts an HTML or an XHTML response.
+        /// </summary>
+        /// <param name="request">Request to check for HTML response acceptance.</param>
+        /// <returns>True if the request accepts an HTML response.</returns>
+        public static bool IsHtmlRequest(this HttpRequestBase request)
+        {
+            var acc0 = request.AcceptedMimesInOrder().First() ?? new string[0];
+            var isHtml = acc0.Contains("text/html", StringComparer.InvariantCultureIgnoreCase)
+                         || acc0.Contains("application/xhtml", StringComparer.InvariantCultureIgnoreCase)
+                         || acc0.Contains("application/xhtml+xml", StringComparer.InvariantCultureIgnoreCase)
+                         || acc0.Contains("*/*", StringComparer.InvariantCulture);
+
+            return isHtml;
+        }
+
+        /// <summary>
+        /// Gets the best negotiated response types, according to request accept header and the given response types.
+        /// </summary>
+        /// <param name="request">Request to get accept header from.</param>
+        /// <param name="responseTypes">Available response types in the same format as the accept header.</param>
+        /// <returns>The best negotiated mime types for the given request response.</returns>
+        public static string[] GetBestResponseMimeTypes(
+            [NotNull] this HttpRequestBase request,
+            [NotNull] string responseTypes)
+        {
+            if (request == null) throw new ArgumentNullException("request");
+            if (responseTypes == null) throw new ArgumentNullException("responseTypes");
+
+            var best = GetMimeTypesNegotiatedScores(request, responseTypes)
+                .GroupBy(x => x.Value, x => x.Key)
+                .OrderByDescending(g => g.Key)
+                .Select(g => g.ToArray())
+                .FirstOrDefault();
+
+            return best;
+        }
+
+        private static IEnumerable<KeyValuePair<string, double>> GetMimeTypesNegotiatedScores(
+            HttpRequestBase request,
+            string responseTypes)
+        {
+            var accepted = AcceptedMimesAndQualities(request.Headers["Accept"]);
+
+            var available = AcceptedMimesAndQualities(responseTypes)
+                .ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var accKv in accepted)
+            {
+                double avQ;
+                if (available.TryGetValue(accKv.Key, out avQ))
+                {
+                    var combinedQuality = avQ * accKv.Value;
+                    yield return new KeyValuePair<string, double>(accKv.Key, combinedQuality);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of Mime type groups ordered by requester preference.
+        /// </summary>
+        /// <param name="request">Request to get accept header from.</param>
+        /// <returns>Groups of Mime types ordered by requester preference.</returns>
+        public static string[][] AcceptedMimesInOrder([NotNull] this HttpRequestBase request)
+        {
+            if (request == null) throw new ArgumentNullException("request");
+
+            var strMimes = request.Headers["Accept"];
+
+            var result = AcceptedMimesAndQualities(strMimes)
+                .GroupBy(x => x.Value, x => x.Key)
+                .OrderByDescending(g => g.Key)
+                .Select(g => g.ToArray());
+
+            return result.ToArray();
+        }
+
+        /// <summary>
+        /// Returns a dictionary of mime types and their associated quality values.
+        /// </summary>
+        /// <param name="request">Request to get accept header from.</param>
+        /// <returns>Dictionary of mime types to quality values.</returns>
+        public static Dictionary<string, double> AcceptedMimesQualities([NotNull] this HttpRequestBase request)
+        {
+            if (request == null) throw new ArgumentNullException("request");
+
+            var strMimes = request.Headers["Accept"];
+            var result = AcceptedMimesAndQualities(strMimes)
+                .ToDictionary(x => x.Key, x => x.Value);
+            return result;
+        }
+
+        private static IEnumerable<KeyValuePair<string, double>> AcceptedMimesAndQualities(
+            string strMimes)
+        {
+            var result = from acceptedItem in strMimes.Split(',')
+                         let parts = acceptedItem.Split(';')
+                         where parts.Length > 0
+                         let values = parts
+                             .Select(x => x.Split('='))
+                             .Where(x => x.Length == 2)
+                         let q = values.Where(x => x[0] == "q").Select(x => x[1]).SingleOrDefault()
+                         let quality = q == null ? 1.0 : double.Parse(q, CultureInfo.InvariantCulture)
+                         group quality by parts.First() into g
+                         select new KeyValuePair<string, double>(g.Key, g.Max());
+
+            return result;
         }
     }
 }

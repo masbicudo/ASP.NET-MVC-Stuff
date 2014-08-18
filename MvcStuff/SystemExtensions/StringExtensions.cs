@@ -22,13 +22,20 @@ namespace MvcStuff.SystemExtensions
             char separator,
             StringSplitOptions options)
         {
+            if (str == null) throw new ArgumentNullException("str");
+
             var prevPos = 0;
             while (true)
             {
                 var nextPos = str.IndexOf(separator, prevPos);
 
                 if (nextPos < 0)
+                {
+                    if (options != StringSplitOptions.RemoveEmptyEntries || prevPos < str.Length)
+                        yield return str.Substring(prevPos);
+
                     yield break;
+                }
 
                 if (options != StringSplitOptions.RemoveEmptyEntries || nextPos != prevPos)
                     yield return str.Substring(prevPos, nextPos - prevPos);
