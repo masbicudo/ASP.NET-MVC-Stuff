@@ -52,6 +52,7 @@
     <Compile Include="ActionResults\UnauthorizedResult.cs" />
     <Compile Include="AllowanceDisposer.cs" />
     <Compile Include="GenericModelErrorData.cs" />
+    <Compile Include="Mocks\IHttpRequestMutable.cs" />
     <Compile Include="ModelStateDictionaryExtensions.cs" />
     <Compile Include="CustomKey.cs" />
     <Compile Include="DataDisposer.cs" />

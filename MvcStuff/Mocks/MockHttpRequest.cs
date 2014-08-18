@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
+using MvcStuff.Mocks;
 
 namespace MvcStuff
 {
-    public class MockHttpRequest : HttpRequestBase
+    public class MockHttpRequest : HttpRequestBase,
+        IHttpRequestMutable
     {
         /// <summary>
         /// Gets or sets the default Url getter, 
@@ -105,18 +107,18 @@ namespace MvcStuff
             }
         }
 
-        public string HttpMethod2 { get; set; }
+        public string MutableHttpMethod { get; set; }
 
-        public Uri Url2 { get; set; }
+        public Uri MutableUrl { get; set; }
 
         public override string HttpMethod
         {
-            get { return this.HttpMethod2; }
+            get { return this.MutableHttpMethod; }
         }
 
         public override Uri Url
         {
-            get { return this.Url2 ?? (DefaultUrlGetter ?? (r => r.Url))(this.httpRequestBase); }
+            get { return this.MutableUrl ?? (DefaultUrlGetter ?? (r => r.Url))(this.httpRequestBase); }
         }
 
         public override string ApplicationPath
@@ -147,6 +149,18 @@ namespace MvcStuff
         public override NameValueCollection QueryString
         {
             get { return this.queryStr; }
+        }
+
+        string IHttpRequestMutable.HttpMethod
+        {
+            get { return this.MutableHttpMethod; }
+            set { this.MutableHttpMethod = value; }
+        }
+
+        Uri IHttpRequestMutable.Url
+        {
+            get { return this.MutableUrl; }
+            set { this.MutableUrl = value; }
         }
     }
 }
