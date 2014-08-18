@@ -17,12 +17,12 @@ namespace MvcStuff
 
         public JsonForbiddenResult([Localizable(true)] string statusDescription)
         {
-            this.Data = this.Data ?? new JsonResponseData
+            this.Data = this.Data ?? new GenericResponseData
             {
-                Success = false,
-                Message = statusDescription,
-                ErrorType = "forbidden",
-                Status = (int)HttpStatusCode.Forbidden,
+                Ok = false,
+                Msg = statusDescription,
+                ErrId = "forbidden",
+                Code = (int)HttpStatusCode.Forbidden,
             };
 
             this.StatusDescription = statusDescription;

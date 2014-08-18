@@ -72,8 +72,8 @@ namespace MvcStuff
                 Request2 =
                     new MockHttpRequest(currentControllerContext.HttpContext.Request)
                     {
-                        HttpMethod2 = httpMethod,
-                        Url2 = uri,
+                        MutableHttpMethod = httpMethod,
+                        MutableUrl = uri,
                     }
             };
 
@@ -165,8 +165,8 @@ namespace MvcStuff
                 Request2 =
                     new MockHttpRequest(currentControllerContext.HttpContext.Request)
                     {
-                        HttpMethod2 = httpMethod,
-                        Url2 = uriBuilder.Uri,
+                        MutableHttpMethod = httpMethod,
+                        MutableUrl = uriBuilder.Uri,
                     }
             };
 

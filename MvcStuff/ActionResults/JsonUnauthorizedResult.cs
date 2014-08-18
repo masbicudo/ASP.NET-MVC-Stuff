@@ -17,12 +17,12 @@ namespace MvcStuff
 
         public JsonUnauthorizedResult([Localizable(true)] string statusDescription)
         {
-            this.Data = this.Data ?? new JsonResponseData
+            this.Data = this.Data ?? new GenericResponseData
             {
-                Success = false,
-                Message = statusDescription,
-                ErrorType = "unauthorized",
-                Status = (int)HttpStatusCode.Unauthorized,
+                Ok = false,
+                Msg = statusDescription,
+                ErrId = "unauthorized",
+                Code = (int)HttpStatusCode.Unauthorized,
             };
 
             this.StatusDescription = statusDescription;

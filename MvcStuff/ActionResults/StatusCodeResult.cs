@@ -49,12 +49,12 @@ namespace MvcStuff
 
             this.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
-            this.Data = this.Data ?? new JsonResponseData
+            this.Data = this.Data ?? new GenericResponseData
             {
-                Success = false,
-                Message = statusDescription,
-                ErrorType = this.StatusCode.ToString().ToLowerInvariant(),
-                Status = (int)statusCode,
+                Ok = false,
+                Msg = statusDescription,
+                ErrId = this.StatusCode.ToString().ToLowerInvariant(),
+                Code = (int)statusCode,
             };
         }
 

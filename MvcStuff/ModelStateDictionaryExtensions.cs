@@ -68,29 +68,29 @@ namespace MvcStuff
 
         public static void FillJsonResponse(
             this ModelStateDictionary modelState,
-            JsonResponseData target,
+            GenericResponseData target,
             string title,
             string errorType)
         {
             if (!modelState.IsValid)
             {
-                target.Message = string.Join("\n", modelState.GetMarkdownErrorLines(title));
-                target.Success = false;
-                target.ModelErrors = modelState.GetJsonModelErrors();
-                target.ErrorType = errorType;
+                target.Msg = string.Join("\n", modelState.GetMarkdownErrorLines(title));
+                target.Ok = false;
+                target.Errs = modelState.GetJsonModelErrors();
+                target.ErrId = errorType;
             }
         }
 
-        public static JsonModelErrorData[] GetJsonModelErrors(
+        public static GenericModelErrorData[] GetJsonModelErrors(
             this ModelStateDictionary modelState)
         {
             var errors = modelState.GetAllErrors()
                 .GroupBy(x => x.Item2.ErrorMessage)
                 .Select(
-                    x => new JsonModelErrorData
+                    x => new GenericModelErrorData
                     {
-                        Members = x.Select(y => y.Item1).ToArray(),
-                        Message = x.Key,
+                        Names = x.Select(y => y.Item1).ToArray(),
+                        Msg = x.Key,
                     })
                 .ToArray();
 
