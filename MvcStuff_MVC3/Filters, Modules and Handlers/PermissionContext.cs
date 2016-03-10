@@ -31,7 +31,7 @@ namespace MvcStuff
         /// <summary>
         /// Gets the controller context.
         /// </summary>
-        public ControllerContext ControllerContext { get; private set; }
+        public ControllerContext ControllerContext { get; }
 
         /// <summary>
         /// Gets the current user.

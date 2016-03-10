@@ -122,7 +122,7 @@ namespace MvcStuff
             // TODO: must cache all of these informations
 
             if (@this == null)
-                throw new ArgumentNullException("this");
+                throw new ArgumentNullException(nameof(@this));
 
             var methodStr = method.ToString().ToUpperInvariant();
             var routeValuesDic = new RouteValueDictionary(routeValues);
@@ -180,10 +180,10 @@ namespace MvcStuff
             // TODO: must cache all of these informations
 
             if (@this == null)
-                throw new ArgumentNullException("this");
+                throw new ArgumentNullException(nameof(@this));
 
             if (url == null)
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
 
             var methodStr = method.ToString().ToUpperInvariant();
             var routeValuesDic = new RouteValueDictionary(queryValues);
@@ -247,7 +247,7 @@ namespace MvcStuff
             // TODO: must cache all of these informations
 
             if (@this == null)
-                throw new ArgumentNullException("this");
+                throw new ArgumentNullException(nameof(@this));
 
             var methodStr = method.ToString().ToUpperInvariant();
             var routeValuesDic = new RouteValueDictionary(routeValues);
@@ -340,7 +340,7 @@ namespace MvcStuff
             [AspMvcController]string controller = null)
         {
             if (@this == null)
-                throw new ArgumentNullException("this");
+                throw new ArgumentNullException(nameof(@this));
 
             var routeData = @this.ViewContext.RouteData;
             var currentAction = routeData.GetRequiredString("action");
@@ -364,7 +364,7 @@ namespace MvcStuff
             [AspMvcController]params string[] controllerNames)
         {
             if (@this == null)
-                throw new ArgumentNullException("this");
+                throw new ArgumentNullException(nameof(@this));
 
             var routeData = @this.ViewContext.RouteData;
             var currentController = routeData.GetRequiredString("controller");

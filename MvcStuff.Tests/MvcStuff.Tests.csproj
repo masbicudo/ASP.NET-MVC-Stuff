@@ -55,9 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MvcStuff\MvcStuff.csproj">
+    <ProjectReference Include="..\MvcStuff_MVC3\MvcStuff_MVC3.csproj">
       <Project>{90551512-09c2-465b-807f-20bd7a7c03d3}</Project>
-      <Name>MvcStuff</Name>
+      <Name>MvcStuff_MVC3</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

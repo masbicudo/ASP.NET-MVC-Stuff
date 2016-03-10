@@ -12,7 +12,7 @@ namespace MvcStuff.SystemExtensions
             StringSplitOptions options = StringSplitOptions.None)
         {
             if (str == null)
-                throw new ArgumentNullException("str");
+                throw new ArgumentNullException(nameof(str));
 
             return EnumerableSplitInternal(str, separator, options);
         }
@@ -22,7 +22,7 @@ namespace MvcStuff.SystemExtensions
             char separator,
             StringSplitOptions options)
         {
-            if (str == null) throw new ArgumentNullException("str");
+            if (str == null) throw new ArgumentNullException(nameof(str));
 
             var prevPos = 0;
             while (true)

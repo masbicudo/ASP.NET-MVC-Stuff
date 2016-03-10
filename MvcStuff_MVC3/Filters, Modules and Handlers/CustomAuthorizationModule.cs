@@ -85,7 +85,7 @@ namespace MvcStuff
         {
             UnknownUserStatusCode = HttpStatusCode.NotFound;
             KnownUnauthorizedUserStatusCode = HttpStatusCode.NotFound;
-            KnownUnauthorizedUserStatusCode = HttpStatusCode.Unauthorized;
+            KnownUnauthorizedAjaxStatusCode = HttpStatusCode.Unauthorized;
         }
 
         public static HttpStatusCode? UnknownUserStatusCode { get; set; }

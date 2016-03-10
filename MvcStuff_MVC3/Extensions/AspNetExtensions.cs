@@ -128,8 +128,8 @@ namespace MvcStuff
             [NotNull] this HttpRequestBase request,
             [NotNull] string responseTypes)
         {
-            if (request == null) throw new ArgumentNullException("request");
-            if (responseTypes == null) throw new ArgumentNullException("responseTypes");
+            if (request == null) throw new ArgumentNullException(nameof(request));
+            if (responseTypes == null) throw new ArgumentNullException(nameof(responseTypes));
 
             var best = GetMimeTypesNegotiatedScores(request, responseTypes)
                 .GroupBy(x => x.Value, x => x.Key)
@@ -167,7 +167,7 @@ namespace MvcStuff
         /// <returns>Groups of Mime types ordered by requester preference.</returns>
         public static string[][] AcceptedMimesInOrder([NotNull] this HttpRequestBase request)
         {
-            if (request == null) throw new ArgumentNullException("request");
+            if (request == null) throw new ArgumentNullException(nameof(request));
 
             var strMimes = request.Headers["Accept"];
 
@@ -186,7 +186,7 @@ namespace MvcStuff
         /// <returns>Dictionary of mime types to quality values.</returns>
         public static Dictionary<string, double> AcceptedMimesQualities([NotNull] this HttpRequestBase request)
         {
-            if (request == null) throw new ArgumentNullException("request");
+            if (request == null) throw new ArgumentNullException(nameof(request));
 
             var strMimes = request.Headers["Accept"];
             var result = AcceptedMimesAndQualities(strMimes)

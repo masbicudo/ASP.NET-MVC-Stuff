@@ -88,7 +88,7 @@ namespace MvcStuff
         public override void ExecuteResult(ControllerContext context)
         {
             if (context == null)
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException(nameof(context));
 
             var request = context.HttpContext.Request;
             var response = context.HttpContext.Response;
@@ -104,7 +104,7 @@ namespace MvcStuff
                 // todo: json requests are being made without setting the content-type to "application/json" throughout the application
                 // todo: Xhr requests made without "application/json" are meant to be XML, not JSON.
 
-                if (JsonRequestBehavior == JsonRequestBehavior.DenyGet &&
+                if (this.JsonRequestBehavior == JsonRequestBehavior.DenyGet &&
                     String.Equals(request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new InvalidOperationException("Json result via GET request is not allowed.");
@@ -189,14 +189,14 @@ namespace MvcStuff
                 this.StatusDescription = statusCodeResult.StatusDescription;
             }
 
-            public string StatusDescription { get; set; }
+            public string StatusDescription { get; }
 
-            public HttpStatusCode StatusCode { get; set; }
+            public HttpStatusCode StatusCode { get; }
 
-#if !ASP_MVC_4
-            public int? MaxJsonLength { get; set; }
+#if !ASP_MVC_4 && !ASP_MVC_5
+            public int? MaxJsonLength { get; }
 
-            public int? RecursionLimit { get; set; }
+            public int? RecursionLimit { get; }
 #endif
 
             public override void ExecuteResult(ControllerContext context)
@@ -230,17 +230,17 @@ namespace MvcStuff
                 this.JsonRecursionLimit = statusCodeResult.JsonRecursionLimit;
             }
 
-            public int? JsonRecursionLimit { get; set; }
+            public int? JsonRecursionLimit { get; }
 
-            public int? MaxJsonLength { get; set; }
+            public int? MaxJsonLength { get; }
 
-            public JsonRequestBehavior JsonRequestBehavior { get; set; }
+            public JsonRequestBehavior JsonRequestBehavior { get; }
 
-            public object Data { get; set; }
+            public object Data { get; }
 
-            public string JsonContentType { get; set; }
+            public string JsonContentType { get; }
 
-            public Encoding JsonContentEncoding { get; set; }
+            public Encoding JsonContentEncoding { get; }
 
             public override void ExecuteResult(ControllerContext context)
             {

@@ -21,7 +21,7 @@ namespace MvcStuff
                 this.Controllers = new Dictionary<object, ControllerBase>();
             }
 
-            public Dictionary<object, ControllerBase> Controllers { get; private set; }
+            public Dictionary<object, ControllerBase> Controllers { get; }
         }
 
         public static MvcControllerHelper Create(

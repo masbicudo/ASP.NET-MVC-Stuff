@@ -5,24 +5,24 @@ using System.Web.Mvc;
 namespace MvcStuff
 {
     /// <summary>
-    /// Representa um resultado contendo um código de status 403 (Forbidden).
+    /// Representa um resultado contendo um código de status 401 (Unauthorized).
     /// Esse resultado pode ser somente para requisições JSON ou XML (Ajax).
     /// </summary>
-    public class JsonForbiddenResult : JsonResult
+    public class JsonUnauthorizedResult : JsonResult
     {
-        public JsonForbiddenResult()
+        public JsonUnauthorizedResult()
             : this(null)
         {
         }
 
-        public JsonForbiddenResult([Localizable(true)] string statusDescription)
+        public JsonUnauthorizedResult([Localizable(true)] string statusDescription)
         {
             this.Data = this.Data ?? new GenericResponseData
             {
                 Ok = false,
                 Msg = statusDescription,
-                ErrId = "forbidden",
-                Code = (int)HttpStatusCode.Forbidden,
+                ErrId = "unauthorized",
+                Code = (int)HttpStatusCode.Unauthorized,
             };
 
             this.StatusDescription = statusDescription;
@@ -32,12 +32,12 @@ namespace MvcStuff
         {
             base.ExecuteResult(context);
 
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             if (StatusDescription != null)
                 context.HttpContext.Response.StatusDescription = StatusDescription;
         }
 
         [Localizable(true)]
-        public string StatusDescription { get; private set; }
+        public string StatusDescription { get; }
     }
 }

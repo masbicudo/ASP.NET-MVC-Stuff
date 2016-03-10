@@ -81,3 +81,8 @@ UpgradeLog*.htm*
 # files not to be commited
 Uncommited.*
 Uncommited/
+packages/
+.vs/
+MvcStuff_MVC5/**/*.cs
+MvcStuff_MVC4/**/*.cs
+MvcStuff_MVC6/**/*.cs
