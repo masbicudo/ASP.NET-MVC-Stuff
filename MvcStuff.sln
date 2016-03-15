@@ -3,13 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStuffSamples", "MvcStuff_MVC3_Samples\MvcStuff_MVC3_Samples.csproj", "{833DD026-0D38-47BB-BAE5-37275444C719}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStuff_MVC3_Samples", "MvcStuff_MVC3_Samples\MvcStuff_MVC3_Samples.csproj", "{833DD026-0D38-47BB-BAE5-37275444C719}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStuff_MVC3", "MvcStuff_MVC3\MvcStuff_MVC3.csproj", "{90551512-09C2-465B-807F-20BD7A7C03D3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "ConsoleApplication\ConsoleApplication.csproj", "{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures", "DataStructures\DataStructures.csproj", "{E8757858-B17B-43D4-AA13-412E552386DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStuff.Tests", "MvcStuff.Tests\MvcStuff.Tests.csproj", "{DE5598C9-DFF9-44A5-B347-DEF81164D1A4}"
 EndProject
@@ -33,14 +29,6 @@ Global
 		{90551512-09C2-465B-807F-20BD7A7C03D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90551512-09C2-465B-807F-20BD7A7C03D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90551512-09C2-465B-807F-20BD7A7C03D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8757858-B17B-43D4-AA13-412E552386DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8757858-B17B-43D4-AA13-412E552386DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8757858-B17B-43D4-AA13-412E552386DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8757858-B17B-43D4-AA13-412E552386DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE5598C9-DFF9-44A5-B347-DEF81164D1A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE5598C9-DFF9-44A5-B347-DEF81164D1A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE5598C9-DFF9-44A5-B347-DEF81164D1A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
