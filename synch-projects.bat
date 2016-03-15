@@ -14,3 +14,5 @@ robocopy "MvcStuff_MVC5" "MvcStuff_MVC6" "*.cs" /e /b /z /dcopy:T /COPY:DAT /xo 
 robocopy "MvcStuff_MVC6" "MvcStuff_MVC3" "*.cs" /e /b /z /dcopy:T /COPY:DAT /xo /xx /xj /it
 robocopy "MvcStuff_MVC6" "MvcStuff_MVC4" "*.cs" /e /b /z /dcopy:T /COPY:DAT /xo /xx /xj /it
 robocopy "MvcStuff_MVC6" "MvcStuff_MVC5" "*.cs" /e /b /z /dcopy:T /COPY:DAT /xo /xx /xj /it
+
+exit 0
