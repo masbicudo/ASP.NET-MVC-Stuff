@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStuffSamples", "MvcStuff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcStuff_MVC3", "MvcStuff_MVC3\MvcStuff_MVC3.csproj", "{90551512-09C2-465B-807F-20BD7A7C03D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JetBrains.Annotations", "JetBrains.Annotations\JetBrains.Annotations.csproj", "{9B5C10FF-C4AD-48FF-803C-BB23F2E7F37C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "ConsoleApplication\ConsoleApplication.csproj", "{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataStructures", "DataStructures\DataStructures.csproj", "{E8757858-B17B-43D4-AA13-412E552386DC}"
@@ -35,10 +33,6 @@ Global
 		{90551512-09C2-465B-807F-20BD7A7C03D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90551512-09C2-465B-807F-20BD7A7C03D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90551512-09C2-465B-807F-20BD7A7C03D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B5C10FF-C4AD-48FF-803C-BB23F2E7F37C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B5C10FF-C4AD-48FF-803C-BB23F2E7F37C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B5C10FF-C4AD-48FF-803C-BB23F2E7F37C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B5C10FF-C4AD-48FF-803C-BB23F2E7F37C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBB8F7CC-B308-4132-9410-D6A0EEE399D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
