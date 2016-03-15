@@ -193,7 +193,7 @@ namespace MvcStuff
 
             public HttpStatusCode StatusCode { get; }
 
-#if !ASP_MVC_4 && !ASP_MVC_5
+#if ASP_MVC_3
             public int? MaxJsonLength { get; }
 
             public int? RecursionLimit { get; }
