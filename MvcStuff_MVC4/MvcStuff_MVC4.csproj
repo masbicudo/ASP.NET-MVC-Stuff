@@ -115,8 +115,6 @@
     <Compile Include="ViewDataDictionaryExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
