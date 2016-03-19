@@ -5,9 +5,23 @@ using System.Web.Mvc;
 
 namespace MvcStuff
 {
-    public class CustomAuthorizationModule : IHttpModule
+    /// <summary>
+    /// HttpModule used to handle Unauthorized (401) status code.
+    /// It helps you hide it from unauthenticated users,
+    /// and disables the behaviour of redirecting to the Login page in an Ajax request.
+    /// </summary>
+    public class CustomAuthorizationModule :
+        IHttpModule
     {
-        private static readonly object PreviousStatusCodeKey = new object();
+        // this came from MVCStuff project
+
+        class NamedObject
+        {
+            public string Name { get; set; }
+            public override string ToString() => this.Name;
+        }
+
+        private static readonly object previousStatusCodeKey = new NamedObject { Name = "previousStatusCodeKey" };
 
         void IHttpModule.Init(HttpApplication context)
         {
@@ -19,15 +33,15 @@ namespace MvcStuff
         {
         }
 
-        private void OnPostReleaseRequestState(object source, EventArgs args)
+        private static void OnPostReleaseRequestState(object source, EventArgs args)
         {
             var context = (HttpApplication)source;
             var response = context.Response;
 
-            context.Context.Items[PreviousStatusCodeKey] = response.StatusCode;
+            context.Context.Items[previousStatusCodeKey] = response.StatusCode;
         }
 
-        private void OnEndRequest(object source, EventArgs args)
+        private static void OnEndRequest(object source, EventArgs args)
         {
             var context = (HttpApplication)source;
             var request = new HttpRequestWrapper(context.Request);
@@ -38,8 +52,9 @@ namespace MvcStuff
             if (response.TrySkipIisCustomErrors)
                 return;
 
-            var prevStatusCode = (int?)context.Context.Items[PreviousStatusCodeKey];
-            if (prevStatusCode == 401 || response.StatusCode == 401)
+            var prevStatusCode = (int?)context.Context.Items[previousStatusCodeKey];
+            const int unauthorized = (int)HttpStatusCode.Unauthorized; // 401
+            if (prevStatusCode == unauthorized || response.StatusCode == unauthorized)
             {
                 if (!request.IsAuthenticated)
                 {
@@ -72,6 +87,7 @@ namespace MvcStuff
                     // redirect user to unauthorized page
                     if (KnownUnauthorizedUserStatusCode.HasValue && response.StatusCode != (int)KnownUnauthorizedUserStatusCode.Value)
                     {
+                        // let IIS redirect the user to the Login page in this case
                         response.TrySkipIisCustomErrors = false;
                         response.ClearContent();
                         response.StatusCode = (int)KnownUnauthorizedUserStatusCode.Value;
@@ -88,8 +104,26 @@ namespace MvcStuff
             KnownUnauthorizedAjaxStatusCode = HttpStatusCode.Unauthorized;
         }
 
+        /// <summary>
+        /// Gets or sets the status code that should be used when
+        /// the user is not authenticated, and tries to access a resource
+        /// that resulted in Unauthorized (401) status code.
+        /// </summary>
         public static HttpStatusCode? UnknownUserStatusCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the status code that should be used when
+        /// the user is authenticated, and tries to access a resource
+        /// that resulted in Unauthorized (401) status code.
+        /// </summary>
         public static HttpStatusCode? KnownUnauthorizedUserStatusCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the status code that should be used when
+        /// the user is authenticated, and tries to access a resource
+        /// that resulted in Unauthorized (401) status code,
+        /// in the context of an Ajax request.
+        /// </summary>
         public static HttpStatusCode? KnownUnauthorizedAjaxStatusCode { get; set; }
     }
 }

@@ -26,6 +26,10 @@ namespace MvcStuff
             };
         }
 
+        /// <summary>
+        /// Renders the given data to the most appropriate format,
+        /// by examining the accepted mime types of the request.
+        /// </summary>
         public static DataViewResult DataView([NotNull] this Controller controller, [AspMvcView] string viewName, object data)
         {
             if (controller == null)

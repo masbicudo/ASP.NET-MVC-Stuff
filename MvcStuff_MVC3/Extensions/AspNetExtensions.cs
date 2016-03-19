@@ -76,7 +76,7 @@ namespace MvcStuff
         }
 
         /// <summary>
-        /// Returns a value indicating whether this requests accepts a JSON response.
+        /// Returns a value indicating whether this requests accepts a JSON response as the first alternative.
         /// </summary>
         /// <param name="request">Request to check for JSON response acceptance.</param>
         /// <returns>True if the request accepts a JSON response.</returns>
@@ -89,7 +89,7 @@ namespace MvcStuff
         }
 
         /// <summary>
-        /// Returns a value indicating whether this requests accepts an XML response, that is not XHTML.
+        /// Returns a value indicating whether this requests accepts an XML response, that is not XHTML, as the first alternative.
         /// </summary>
         /// <param name="request">Request to check for XML response acceptance.</param>
         /// <returns>True if the request accepts an XML response.</returns>
@@ -103,7 +103,7 @@ namespace MvcStuff
         }
 
         /// <summary>
-        /// Returns a value indicating whether this requests accepts an HTML or an XHTML response.
+        /// Returns a value indicating whether this requests accepts an HTML or an XHTML response as the first alternative.
         /// </summary>
         /// <param name="request">Request to check for HTML response acceptance.</param>
         /// <returns>True if the request accepts an HTML response.</returns>
