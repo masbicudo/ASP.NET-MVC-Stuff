@@ -9,87 +9,52 @@ namespace MvcStuff
     /// </summary>
     public class DebugInfo
     {
+        private static bool? tempIsDebug;
+
         /// <summary>
-        /// Gets whether the DEBUG directive is defined.
+        /// Useful to avoid C# and Resharper complaining about unreachable code,
+        /// after #if DEBUG #endif statements, and about unused values before the #if DEBUG code.
         /// </summary>
         public static bool IsDebug
         {
             get
             {
 #if DEBUG
-                return true;
-#else
-                return false;
+                lock (locker)
+                    return tempIsDebug ?? true;
 #endif
+                // pragma: disable warning about unreachable code
+#pragma warning disable 162
+                // ReSharper disable HeuristicUnreachableCode
+                return false;
+                // ReSharper restore HeuristicUnreachableCode
+#pragma warning restore 162
             }
         }
-        
-        private static readonly object locker = new object();
-
-        private static HostingServer? _server;
 
         /// <summary>
-        /// Gets the current running host environment.
+        /// Sets the IsDebug flag to return false for the duration of the returned disposable object.
+        /// This does not work when compiling in RELEASE mode.
         /// </summary>
-        public static HostingServer HostEnvironment
+        /// <returns>Disposable object that returns the IsDebug flag to the original state.</returns>
+        public static Disposer SetDebug(bool value)
         {
-            get
-            {
-                if (!_server.HasValue)
+            lock (locker)
+                tempIsDebug = value;
+
+            return new Disposer(
+                () =>
+                {
                     lock (locker)
-                        if (!_server.HasValue)
-                        {
-                            var isBuilding = HostingEnvironment.InClientBuildManager;
-
-                            //var isdev = HostingEnvironment.IsDevelopmentEnvironment;
-
-                            var ishosted = HostingEnvironment.IsHosted;
-
-                            var procName = Process.GetCurrentProcess().ProcessName;
-                            if (String.Equals(procName, "iisexpress"))
-                            {
-                                _server = HostingServer.IisExpress;
-                            }
-                            else if (String.Equals(procName, "w3wp"))
-                            {
-                                _server = HostingServer.Iis;
-                            }
-                            else
-                            {
-                                _server = HostingServer.Unknown;
-                            }
-                        }
-
-                return _server.Value;
-            }
+                        tempIsDebug = null;
+                });
         }
+
+        private static readonly object locker = new object();
 
         public static bool NoHttps
         {
             get { return false; }
         }
-    }
-
-    public enum HostingServer
-    {
-        /// <summary>
-        /// Unknown host environment.
-        /// </summary>
-        Unknown,
-
-        /// <summary>
-        /// IIS full version (not express, not embedded).
-        /// </summary>
-        Iis,
-
-        /// <summary>
-        /// IIS Express.
-        /// </summary>
-        IisExpress,
-
-        /// <summary>
-        /// Visual Studio web development server.
-        /// </summary>
-        WebDevServer,
     }
 }
